@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentChangeAction } from '@angular/fire/compat/firestore';
 import Coche from '../../models/coche';
 import { Observable } from 'rxjs';
+import Transaccion from '../../models/transaccion';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,10 @@ export class CocheService {
     return this.parseData(this.firestore.collection('coches').snapshotChanges());
   }
 
-  getCocheById(cocheId: string){
-    return this.firestore.collection('coches').doc(cocheId).valueChanges();
+  getCocheById(cocheId: string): Coche{
+    return this.parseData(
+      this.firestore.collection('coches', ref => ref.where('id', '==', cocheId)).snapshotChanges()
+    )[0];
   }
 
   getCochesByMarca(marca: string): Coche[]{
@@ -84,9 +87,11 @@ export class CocheService {
     return coches;
   }
 
-  // getCoche(cocheId: string){
-  //   return this.firestore.collection('coches').doc(cocheId).get();
-  // }
+  addTransaccion(cocheId: string, transaccion: Transaccion){
+    const coche = this.getCocheById(cocheId);
+    coche.transacciones.push(transaccion.id)
+    this.updateCoche(coche);
+  }
 
   createCoche(coche: Coche){
     return this.firestore.collection('coches').add(coche);
