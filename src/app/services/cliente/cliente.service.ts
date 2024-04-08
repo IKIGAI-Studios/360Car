@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, DocumentChangeAction } from '@angular/fire/compat/firestore';
 import Cliente from '../../models/cliente';
 import Coche from '../../models/coche';
 import Transaccion from '../../models/transaccion';
 import { CocheService } from '../coche/coche.service';
 import { TransaccionService } from '../transaccion/transaccion.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,36 +14,60 @@ export class ClienteService {
 
   constructor(private firestore:AngularFirestore) { }
 
-  getClientes(){
+  async getClientes(): Promise<Cliente[]>{
+    return await this.parseData(this.firestore.collection('clientes').snapshotChanges());
+  }
+
+  async getClienteById(clienteId: string): Promise<Cliente>{
+    const clientes = await this.parseData(
+      this.firestore.collection('clientes', ref => ref.where('id', '==', clienteId)).snapshotChanges()
+    );
+    return clientes[0];
+  }
+
+  parseData(snapshot: Observable<DocumentChangeAction<unknown>[]>): Promise<Cliente[]> {
     let clientes: Cliente[] = [];
 
-    this.firestore.collection('clientes').snapshotChanges().subscribe(data => {
-      clientes = data.map(doc => {
-        return {
-          ...doc.payload.doc.data() as Cliente,
-          id: doc.payload.doc.id
-        }
-      })
+    return new Promise((resolve) => {
+      snapshot.subscribe(data => {
+        clientes = data.map(doc => {
+          return {
+            ...doc.payload.doc.data() as Cliente,
+            id: doc.payload.doc.id
+          }
+        });
+        resolve(clientes);
+      });
     });
-
-    return clientes;
   }
 
-  createCliente(cliente: Cliente){
-    return this.firestore.collection('clientes').add(cliente);
+  async createCliente(cliente: Cliente){
+    return await this.firestore.collection('clientes').add(Object.assign({}, cliente));
   }
 
-  updateCliente(cliente: Cliente){
-    this.firestore.doc('clientes/' + cliente.id).update(cliente);
+  async updateCliente(cliente: Cliente){
+    await this.firestore.doc('clientes/' + cliente.id).update(cliente);
   }
 
-  deleteCliente(clienteId: string){
-    this.firestore.doc('clientes/' + clienteId).delete();
+  async deleteCliente(clienteId: string){
+    await this.firestore.doc('clientes/' + clienteId).delete();
   }
   
-  addCoche(clienteId: string, cocheId: string){
-    CocheService
+  async addCoche(clienteId: string, cocheId: string){
+    let cliente = await this.getClienteById(clienteId);
+    cliente.coches.push(cocheId);
+    await this.updateCliente(cliente);
+  }
 
-    
+  async removeCoche(clienteId: string, cocheId: string){
+    let cliente = await this.getClienteById(clienteId);
+    cliente.coches = cliente.coches.filter(coche => coche !== cocheId);
+    await this.updateCliente(cliente);
+  }
+
+  async addTransaccion(clienteId: string, transaccionId: string){
+    let cliente = await this.getClienteById(clienteId);
+    cliente.transacciones.push(transaccionId);
+    await this.updateCliente(cliente);
   }
 }

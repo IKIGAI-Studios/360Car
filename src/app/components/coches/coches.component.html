@@ -1,1 +1,77 @@
-<p>coches works!</p>
+<!-- Nuevos Coches -->
+<div>
+    <h2>Añadir coche</h2>
+    <div>
+        <label>
+            Marca
+            <input type="text" [(ngModel)]="currentCoche.marca">
+        </label>
+    </div>
+    <div>
+        <label>
+            Modelo
+            <input type="text" [(ngModel)]="currentCoche.modelo">
+        </label>
+    </div>
+    <div>
+        <label>
+            Kilometros
+            <input type="number" [(ngModel)]="currentCoche.kilometros">
+        </label>
+    </div>
+    <div>
+        <label>
+            Transmision
+            <select [(ngModel)]="currentCoche.transmision">
+                <option value="manual">Manual</option>
+                <option value="automatica">Automatica</option>
+            </select>
+        </label>
+    </div>
+    <div>
+        <label>
+            Precio
+            <input type="number" [(ngModel)]="currentCoche.precio">
+        </label>
+    </div>
+    <div>
+        <button (click)="createCoche()">Añadir</button>
+    </div>
+</div>
+
+<!-- Mostrar los coches -->
+<div>
+    <h2>Coches</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <!-- <th>Color</th>
+                <th>Matrícula</th> -->
+                <th>Kilometros</th>
+                <th>Transmision</th>
+                <th>Precio</th>
+                <th>Vendido</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let coche of coches" data-id="{{ coche.id }}">
+                <td>{{ coche.marca }}</td>
+                <td>{{ coche.modelo }}</td>
+                <!-- <td>{{ coche.color }}</td>
+                <td>{{ coche.matricula }}</td> -->
+                <td>{{ coche.kilometros }}</td>
+                <td>{{ coche.transmision }}</td>
+                <td>{{ coche.precio }}</td>
+                <td>{{ coche.vendido }}</td>
+                <td>
+                    <button class="btn btn-primary" (click)="updateCoche()">Editar</button>
+                    <button class="btn btn-danger" (click)="deleteCoche(coche.id)">Eliminar</button>
+                    <button *ngIf="!coche.vendido" (click)="sellCoche(coche)">Vender</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

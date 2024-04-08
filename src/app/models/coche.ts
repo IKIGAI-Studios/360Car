@@ -7,6 +7,15 @@ export default class Coche {
     vendido: boolean = false;
     transmision: string = '';
     transacciones: string[] = [];
-    dueñoAnterior: string = '';
     dueñoActual: string = '';
+
+    constructor(coche: { marca: string, modelo: string, precio: number, kilometros: number, vendido: boolean, transmision: string, dueñoActual: string }){
+        this.marca = coche.marca;
+        this.modelo = coche.modelo;
+        this.precio = coche.precio;
+        this.kilometros = coche.kilometros;
+        this.vendido = coche.vendido;
+        this.transmision = coche.transmision;
+        this.dueñoActual = coche.dueñoActual;
+    }
 }
