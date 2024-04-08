@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Cliente from '../../models/cliente';
 import { ClienteService } from '../../services/cliente/cliente.service';
+import { MODES } from '../../constants/modes';
 
 @Component({
   selector: 'app-clientes',
@@ -8,6 +9,8 @@ import { ClienteService } from '../../services/cliente/cliente.service';
   styleUrl: './clientes.component.css'
 })
 export class ClientesComponent implements OnInit {
+  state = MODES.create;
+  MODES = MODES;
   clientes: Cliente[] = [];
   currentCliente: Cliente = new Cliente({
     nombre: '',
@@ -38,13 +41,14 @@ export class ClientesComponent implements OnInit {
     await this.updateClientes();
   }
 
-  async deleteCliente(clienteId: string){
-    await this.clienteService.deleteCliente(clienteId);
+  async deleteCliente(){
+    await this.clienteService.deleteCliente(this.currentCliente.id);
     await this.updateClientes();
   }
 
   setCurrentCliente(cliente: Cliente){
     this.currentCliente = cliente;
+    this.state = MODES.select;
   }
 
   resetCurrentCliente(){
@@ -54,5 +58,6 @@ export class ClientesComponent implements OnInit {
       email: '',
       telefono: ''
     });
+    this.state = MODES.create;
   }
 }

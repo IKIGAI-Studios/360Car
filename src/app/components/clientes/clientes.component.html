@@ -1,6 +1,7 @@
 <!-- Nuevos clientes -->
 <div>
-    <h2>Añadir cliente</h2>
+    <h2 *ngIf="state === MODES.create">Añadir cliente</h2>
+    <h2 *ngIf="state === MODES.select">Modificar cliente</h2>
     <div>
         <label>
             Nombre
@@ -25,8 +26,17 @@
             <input type="number" [(ngModel)]="currentCliente.telefono">
         </label>
     </div>
-    <div>
+    <div *ngIf="state === MODES.create">
         <button (click)="createCliente()">Añadir</button>
+    </div>
+    <div *ngIf="state === MODES.select">
+        <button (click)="updateCliente()">Modificar</button>
+    </div>
+    <div *ngIf="state === MODES.select">
+        <button (click)="deleteCliente()">Eliminar</button>
+    </div>
+    <div *ngIf="state === MODES.select">
+        <button (click)="resetCurrentCliente()">Añadir nuevo</button>
     </div>
 </div>
 
@@ -51,7 +61,6 @@
                 <td>{{ cliente.telefono }}</td>
                 <td>
                     <button class="btn btn-primary" (click)="setCurrentCliente(cliente)">Editar</button>
-                    <button class="btn btn-danger" (click)="deleteCliente(cliente.id)">Eliminar</button>
                 </td>
             </tr>
         </tbody>
