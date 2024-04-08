@@ -18,10 +18,11 @@ export class CocheService {
   }
 
   async getCocheById(cocheId: string): Promise<Coche>{
-    const coches = await this.parseData(
-      this.firestore.collection('coches', ref => ref.where('id', '==', cocheId)).snapshotChanges()
-    );
-    return coches[0];
+    return new Promise((resolve) => {
+      this.firestore.doc('coches/' + cocheId).valueChanges().subscribe(data => {
+        resolve(data as Coche);
+      });
+    })
   }
 
   // getCochesByMarca(marca: string): Coche[]{
@@ -101,7 +102,7 @@ export class CocheService {
     const coche = await this.getCocheById(cocheId);
     coche.vendido = true;
 
-    const transaccionVenta = await this.transaccionService.createTransaccion(new Transaccion({
+    const transaccionRef = await this.transaccionService.createTransaccion(new Transaccion({
       fecha: new Date().toLocaleString(),
       precio: coche.precio,
       metodoPago,
@@ -110,8 +111,10 @@ export class CocheService {
       tipo: 'venta'
     }));
 
-    console.log(transaccionVenta);
-    await this.addTransaccion(cocheId, transaccionVenta.id);
+
+    const { id: transaccionId } =  await transaccionRef.get();
+
+    await this.addTransaccion(cocheId, transaccionId);
     await this.updateCoche(coche);
   }
 

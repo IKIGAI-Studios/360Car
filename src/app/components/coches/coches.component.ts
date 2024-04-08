@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Coche from '../../models/coche';
 import { CocheService } from '../../services/coche/coche.service';
+import { MODES } from '../../constants/modes';
 
 @Component({
   selector: 'app-coches',
@@ -8,6 +9,9 @@ import { CocheService } from '../../services/coche/coche.service';
   styleUrl: './coches.component.css'
 })
 export class CochesComponent implements OnInit {
+
+  state = MODES.create;
+  MODES = MODES;
 
   coches: Coche[] = [];
   currentCoche: Coche = new Coche({
@@ -28,7 +32,6 @@ export class CochesComponent implements OnInit {
 
   async updateCoches(){
     this.coches = await this.cocheService.getCoches();
-    console.log(this.coches);
   }
 
   async createCoche(){
@@ -43,23 +46,25 @@ export class CochesComponent implements OnInit {
     });
 
     await this.cocheService.createCoche(newCoche);
-    this.resetCurrentCoche();
     await this.updateCoches();
+    this.resetCurrentCoche();
   }
 
   async updateCoche(){
     await this.cocheService.updateCoche(this.currentCoche);
-    this.resetCurrentCoche();
     await this.updateCoches();
+    this.resetCurrentCoche();
   }
 
-  async deleteCoche(cocheId: string){
-    await this.cocheService.deleteCoche(cocheId);
+  async deleteCoche(){
+    await this.cocheService.deleteCoche(this.currentCoche.id);
     await this.updateCoches();
+    this.resetCurrentCoche();
   }
 
   setCurrentCoche(coche: Coche){
     this.currentCoche = coche;
+    this.state = MODES.select;
   }
 
   resetCurrentCoche(){
@@ -72,10 +77,13 @@ export class CochesComponent implements OnInit {
       transmision: '',
       dueñoActual: ''
     });
+
+    this.state = MODES.create;
   }
 
   // async sellCoche(coche: Coche, clienteId: string, precio: number, metodoPago: string)
-  async sellCoche(coche: Coche){
+  async sellCoche(){
+    const coche = this.currentCoche;
     const clienteId = '123123'
     const metodoPago = 'efectivo'
 

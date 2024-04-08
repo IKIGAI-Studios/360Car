@@ -1,6 +1,7 @@
 <!-- Nuevos Coches -->
 <div>
-    <h2>Añadir coche</h2>
+    <h2 *ngIf="state === MODES.create">Añadir coche</h2>
+    <h2 *ngIf="state === MODES.select">Modificar coche</h2>
     <div>
         <label>
             Marca
@@ -34,8 +35,20 @@
             <input type="number" [(ngModel)]="currentCoche.precio">
         </label>
     </div>
-    <div>
+    <div *ngIf="state === MODES.create">
         <button (click)="createCoche()">Añadir</button>
+    </div>
+    <div *ngIf="state === MODES.select">
+        <button (click)="updateCoche()">Modificar</button>
+    </div>
+    <div *ngIf="state === MODES.select">
+        <button (click)="deleteCoche()">Eliminar</button>
+    </div>
+    <div *ngIf="state === MODES.select && !currentCoche.vendido">
+        <button (click)="sellCoche()">Vender</button>
+    </div>
+    <div *ngIf="state === MODES.select">
+        <button (click)="resetCurrentCoche()">Añadir nuevo</button>
     </div>
 </div>
 
@@ -67,9 +80,7 @@
                 <td>{{ coche.precio }}</td>
                 <td>{{ coche.vendido }}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="setCurrentCoche(coche)">Editar</button>
-                    <button class="btn btn-danger" (click)="deleteCoche(coche.id)">Eliminar</button>
-                    <button *ngIf="!coche.vendido" (click)="sellCoche(coche)">Vender</button>
+                    <button class="btn btn-primary" (click)="setCurrentCoche(coche)">Seleccionar</button>
                 </td>
             </tr>
         </tbody>
