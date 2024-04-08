@@ -1,1 +1,45 @@
-<p>transacciones works!</p>
+<!-- Actualizar transacciones -->
+<div>
+    <h2>Actualizar transaccion</h2>
+    <div>
+        <label>
+            Método de pago
+            <select [(ngModel)]="currentTransaccion.metodoPago">
+                <option value="efectivo">Efectivo</option>
+                <option value="credito">Credito</option>
+                <option value="debito">Debito</option>
+            </select>
+        </label>
+    </div>
+    <div>
+        <button (click)="updateTransaccion()">Actualizar</button>
+    </div>
+</div>
+
+<!-- Mostrar las transacciones -->
+<div>
+    <h2>Transacciones</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Precio</th>
+                <th>Metodo de Pago</th>
+                <th>Coche</th>
+                <th>Cliente</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let transaccion of transacciones" data-id="{{ transaccion.id }}">
+                <td>{{ transaccion.fecha }}</td>
+                <td>{{ transaccion.precio }}</td>
+                <td>{{ transaccion.metodoPago }}</td>
+                <td>{{ transaccion.coche }}</td>
+                <td>{{ transaccion.cliente }}</td>
+                <td>
+                    <button class="btn btn-primary" (click)="setCurrentTransaccion(transaccion)">Editar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

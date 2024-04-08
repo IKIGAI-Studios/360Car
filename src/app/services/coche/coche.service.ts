@@ -4,6 +4,7 @@ import Coche from '../../models/coche';
 import { Observable } from 'rxjs';
 import Transaccion from '../../models/transaccion';
 import { TransaccionService } from '../transaccion/transaccion.service';
+import { metodoPago } from '../../models/transaccion';
 
 @Injectable({
   providedIn: 'root'
@@ -96,7 +97,7 @@ export class CocheService {
     await this.updateCoche(coche);
   }
 
-  async sellCoche(cocheId: string, clienteId: string, precio: number, metodoPago: string){
+  async sellCoche(cocheId: string, clienteId: string, precio: number, metodoPago: metodoPago){
     const coche = await this.getCocheById(cocheId);
     coche.vendido = true;
 

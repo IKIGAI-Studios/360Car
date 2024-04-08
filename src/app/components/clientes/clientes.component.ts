@@ -43,6 +43,10 @@ export class ClientesComponent implements OnInit {
     await this.updateClientes();
   }
 
+  setCurrentCliente(cliente: Cliente){
+    this.currentCliente = cliente;
+  }
+
   resetCurrentCliente(){
     this.currentCliente = new Cliente({
       nombre: '',

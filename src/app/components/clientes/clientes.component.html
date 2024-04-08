@@ -50,7 +50,7 @@
                 <td>{{ cliente.email }}</td>
                 <td>{{ cliente.telefono }}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="updateCliente()">Editar</button>
+                    <button class="btn btn-primary" (click)="setCurrentCliente(cliente)">Editar</button>
                     <button class="btn btn-danger" (click)="deleteCliente(cliente.id)">Eliminar</button>
                 </td>
             </tr>

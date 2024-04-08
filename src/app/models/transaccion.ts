@@ -2,12 +2,12 @@ export default class Transaccion {
     id: string = '';
     fecha: string = '';
     precio: number = 0;
-    metodoPago: string = '';
+    metodoPago: metodoPago = '';
     coche: string = '';
     cliente: string = '';
     tipo: transaccionTipo = '';
 
-    constructor(transaccion: { fecha: string, precio: number, metodoPago: string, coche: string, cliente: string, tipo: transaccionTipo }){
+    constructor(transaccion: { fecha: string, precio: number, metodoPago: metodoPago, coche: string, cliente: string, tipo: transaccionTipo }){
         this.fecha = transaccion.fecha;
         this.precio = transaccion.precio;
         this.metodoPago = transaccion.metodoPago;
@@ -17,4 +17,5 @@ export default class Transaccion {
     }
 }
 
+export type metodoPago = 'efectivo' | 'credito' | 'debito' | '';
 type transaccionTipo = 'venta' | 'compra' | '';

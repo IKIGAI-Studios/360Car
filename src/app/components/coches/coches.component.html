@@ -67,7 +67,7 @@
                 <td>{{ coche.precio }}</td>
                 <td>{{ coche.vendido }}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="updateCoche()">Editar</button>
+                    <button class="btn btn-primary" (click)="setCurrentCoche(coche)">Editar</button>
                     <button class="btn btn-danger" (click)="deleteCoche(coche.id)">Eliminar</button>
                     <button *ngIf="!coche.vendido" (click)="sellCoche(coche)">Vender</button>
                 </td>
