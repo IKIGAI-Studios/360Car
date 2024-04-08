@@ -1,88 +1,102 @@
 <!-- Nuevos Coches -->
-<div>
+<div class="page">
+  <div class="container-title">
     <h2 *ngIf="state === MODES.create">Añadir coche</h2>
     <h2 *ngIf="state === MODES.select">Modificar coche</h2>
-    <div>
-        <label>
+  </div>
+  <div class="row">
+    <div class="column">
+      <div class="container">
+        <div class="input-row">
+          <label>
             Marca
-            <input type="text" [(ngModel)]="currentCoche.marca">
-        </label>
-    </div>
-    <div>
-        <label>
+            <input type="text" [(ngModel)]="currentCoche.marca" />
+          </label>
+        </div>
+        <div class="input-row">
+          <label>
             Modelo
-            <input type="text" [(ngModel)]="currentCoche.modelo">
-        </label>
-    </div>
-    <div>
-        <label>
+            <input type="text" [(ngModel)]="currentCoche.modelo" />
+          </label>
+        </div>
+        <div class="input-row">
+          <label>
             Kilometros
-            <input type="number" [(ngModel)]="currentCoche.kilometros">
-        </label>
-    </div>
-    <div>
-        <label>
+            <input type="number" [(ngModel)]="currentCoche.kilometros" />
+          </label>
+        </div>
+        <div class="input-row">
+          <label>
             Transmision
             <select [(ngModel)]="currentCoche.transmision">
-                <option value="manual">Manual</option>
-                <option value="automatica">Automatica</option>
+              <option value="manual">Manual</option>
+              <option value="automatica">Automatica</option>
             </select>
-        </label>
-    </div>
-    <div>
-        <label>
+          </label>
+        </div>
+        <div class="input-row">
+          <label>
             Precio
-            <input type="number" [(ngModel)]="currentCoche.precio">
-        </label>
-    </div>
-    <div *ngIf="state === MODES.create">
-        <button (click)="createCoche()">Añadir</button>
-    </div>
-    <div *ngIf="state === MODES.select">
-        <button (click)="updateCoche()">Modificar</button>
-    </div>
-    <div *ngIf="state === MODES.select">
-        <button (click)="deleteCoche()">Eliminar</button>
-    </div>
-    <div *ngIf="state === MODES.select && !currentCoche.vendido">
-        <button (click)="sellCoche()">Vender</button>
-    </div>
-    <div *ngIf="state === MODES.select">
-        <button (click)="resetCurrentCoche()">Añadir nuevo</button>
-    </div>
-</div>
+            <input type="number" [(ngModel)]="currentCoche.precio" />
+          </label>
+        </div>
+      </div>
 
-<!-- Mostrar los coches -->
-<div>
-    <h2>Coches</h2>
-    <table class="table">
+      <div class="container botones">
+        <div *ngIf="state === MODES.create">
+          <button (click)="createCoche()" class="btn add">Añadir</button>
+        </div>
+        <div *ngIf="state === MODES.select">
+          <button (click)="updateCoche()" class="btn mod">Modificar</button>
+        </div>
+        <div *ngIf="state === MODES.select">
+          <button (click)="deleteCoche()" class="btn del">Eliminar</button>
+        </div>
+        <div *ngIf="state === MODES.select && !currentCoche.vendido">
+          <button (click)="sellCoche()" class="btn sell">Vender</button>
+        </div>
+        <div *ngIf="state === MODES.select">
+          <button (click)="resetCurrentCoche()" class="btn add">
+            Añadir nuevo
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Mostrar los coches -->
+    <div>
+      <h2>Coches</h2>
+      <table class="table">
         <thead>
-            <tr>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <!-- <th>Color</th>
+          <tr>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <!-- <th>Color</th>
                 <th>Matrícula</th> -->
-                <th>Kilometros</th>
-                <th>Transmision</th>
-                <th>Precio</th>
-                <th>Vendido</th>
-                <th>Acciones</th>
-            </tr>
+            <th>Kilometros</th>
+            <th>Transmision</th>
+            <th>Precio</th>
+            <th>Vendido</th>
+            <th>Acciones</th>
+          </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let coche of coches" data-id="{{ coche.id }}">
-                <td>{{ coche.marca }}</td>
-                <td>{{ coche.modelo }}</td>
-                <!-- <td>{{ coche.color }}</td>
+          <tr *ngFor="let coche of coches" data-id="{{ coche.id }}">
+            <td>{{ coche.marca }}</td>
+            <td>{{ coche.modelo }}</td>
+            <!-- <td>{{ coche.color }}</td>
                 <td>{{ coche.matricula }}</td> -->
-                <td>{{ coche.kilometros }}</td>
-                <td>{{ coche.transmision }}</td>
-                <td>{{ coche.precio }}</td>
-                <td>{{ coche.vendido }}</td>
-                <td>
-                    <button class="btn btn-primary" (click)="setCurrentCoche(coche)">Seleccionar</button>
-                </td>
-            </tr>
+            <td>{{ coche.kilometros }} KM</td>
+            <td>{{ coche.transmision }}</td>
+            <td>{{ coche.precio }} $</td>
+            <td>{{ coche.vendido }}</td>
+            <td>
+              <button class="btn btn-primary" (click)="setCurrentCoche(coche)">
+                Seleccionar
+              </button>
+            </td>
+          </tr>
         </tbody>
-    </table>
+      </table>
+    </div>
+  </div>
 </div>

@@ -1,7 +1,14 @@
 <!-- Actualizar transacciones -->
+<div class="page">
 <div>
+    
+  <div class="container-title">
     <h2>Actualizar transaccion</h2>
-    <div>
+    </div>
+    <div class="row-reverse">
+        <div class="column">
+          <div class="container">
+            <div class="input-row">
         <label>
             Método de pago
             <select [(ngModel)]="currentTransaccion.metodoPago">
@@ -12,9 +19,10 @@
         </label>
     </div>
     <div>
-        <button (click)="updateTransaccion()">Actualizar</button>
+        <button (click)="updateTransaccion()" class="btn upd">Actualizar</button>
     </div>
 </div>
+        </div>
 
 <!-- Mostrar las transacciones -->
 <div>
@@ -42,4 +50,5 @@
             </tr>
         </tbody>
     </table>
+</div>
 </div>

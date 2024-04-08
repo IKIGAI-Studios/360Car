@@ -1,0 +1,40 @@
+.navbar{
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--black);
+}
+
+.navbar-brand{
+    display: flex;
+    align-items: center;
+}
+
+img{
+    height: 6rem;
+}
+
+ul{
+    display: flex;
+    flex-direction: row;
+}
+
+li{
+    list-style: none;
+    list-style-type: none;
+    margin-left: 3rem;
+}
+
+a{
+    text-decoration: none;
+    color: var(--white);
+    font-weight: bold;
+    font-size: 1rem;
+    transition: color ease 0.6s;
+    padding: 1rem;
+}
+
+a:hover{
+    color: var(--yellow);
+}
