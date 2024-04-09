@@ -4,14 +4,17 @@ import Coche from '../../models/coche';
 import { Observable } from 'rxjs';
 import Transaccion from '../../models/transaccion';
 import { TransaccionService } from '../transaccion/transaccion.service';
+import Cliente from '../../models/cliente';
+import { ClienteService } from '../cliente/cliente.service';
 import { metodoPago } from '../../models/transaccion';
+import { transaccionTipo } from '../../models/transaccion';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CocheService {
 
-  constructor(private firestore: AngularFirestore, private transaccionService: TransaccionService) { }
+  constructor(private firestore: AngularFirestore, private transaccionService: TransaccionService, private clienteService: ClienteService) { }
 
   async getCoches(): Promise<Coche[]> {
     return await this.parseData(this.firestore.collection('coches').snapshotChanges());
@@ -103,7 +106,7 @@ export class CocheService {
 
   async sellCoche(cocheId: string, clienteId: string, precio: number, metodoPago: metodoPago){
     const coche = await this.getCocheById(cocheId);
-    coche.vendido = true;
+    const cliente = await this.clienteService.getClienteById(clienteId);
 
     const transaccionRef = await this.transaccionService.createTransaccion(new Transaccion({
       fecha: new Date().toLocaleString(),
@@ -111,9 +114,14 @@ export class CocheService {
       metodoPago,
       coche: cocheId,
       cliente: clienteId,
-      tipo: 'venta'
+      tipo: 'venta' as transaccionTipo,
+      cocheMarca: coche.marca,
+      cocheModelo: coche.modelo,
+      clienteNombre: cliente.nombre,
+      clienteApellidos: cliente.apellidos
     }));
-
+    
+    coche.vendido = true;
     const { id: transaccionId } =  await transaccionRef.get();
     await this.addTransaccion(cocheId, transaccionId);
     await this.updateCoche(coche);

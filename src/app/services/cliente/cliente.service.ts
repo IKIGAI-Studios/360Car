@@ -19,10 +19,14 @@ export class ClienteService {
   }
 
   async getClienteById(clienteId: string): Promise<Cliente>{
-    const clientes = await this.parseData(
-      this.firestore.collection('clientes', ref => ref.where('id', '==', clienteId)).snapshotChanges()
-    );
-    return clientes[0];
+    return new Promise((resolve) => {
+      this.firestore.doc('clientes/' + clienteId).valueChanges().subscribe(data => {
+        resolve({
+          ...data as Cliente,
+          id: clienteId
+        });
+      });
+    });
   }
 
   parseData(snapshot: Observable<DocumentChangeAction<unknown>[]>): Promise<Cliente[]> {

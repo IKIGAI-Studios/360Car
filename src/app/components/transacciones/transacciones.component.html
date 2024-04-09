@@ -37,8 +37,8 @@
                         <td>{{ transaccion.fecha }}</td>
                         <td>{{ transaccion.precio }}</td>
                         <td>{{ transaccion.metodoPago }}</td>
-                        <td>{{ transaccion.coche }}</td>
-                        <td>{{ transaccion.cliente }}</td>
+                        <td>{{ transaccion.cocheMarca + ' ' + transaccion.cocheModelo }}</td>
+                        <td>{{ transaccion.clienteNombre + ' ' + transaccion.clienteApellidos }}</td>
                         <td>
                             <button class="btn btn-primary" (click)="setCurrentTransaccion(transaccion)">Seleccionar</button>
                         </td>

@@ -15,5 +15,5 @@ export function validateAlphanumeric(str: string): boolean{
 }
 
 export function validateEmail(str: string): boolean{
-    return /^\S[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}\S$/.test(str);
+    return /^\S[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}(?:\.[a-zA-Z]{2,6})?\S*$/.test(str);
 }
