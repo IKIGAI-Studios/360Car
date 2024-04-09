@@ -70,7 +70,7 @@ label {
   width: 73%;
   max-width: 73%;
 
-  max-height: 80vh;
+  max-height: 70vh;
   overflow-y: auto;
 }
 
@@ -81,6 +81,14 @@ select {
   border-bottom: solid 2px var(--yellow);
   padding: 0.5rem;
   font-family: "Lexend Deca", sans-serif;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.invalid {
+    border-bottom: solid 2px red;
+  }
 }
 
 option {
@@ -105,6 +113,11 @@ option {
   font-family: "Lexend Deca", sans-serif;
   font-weight: bold;
   cursor: pointer;
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .add {
@@ -135,7 +148,7 @@ option {
   background-color: cornflowerblue;
 }
 
-.btn:hover {
+.btn:not(.disabled):hover {
   background-color: var(--black);
   color: var(--white);
 }

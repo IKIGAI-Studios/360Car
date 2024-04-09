@@ -10,25 +10,25 @@
         <div class="input-row">
           <label>
             Marca
-            <input type="text" [(ngModel)]="currentCoche.marca" />
+            <input type="text" [(ngModel)]="currentCoche.marca" (input)="validateMarca()" [ngClass]="{ 'invalid': !isMarcaValid }"/>
           </label>
         </div>
         <div class="input-row">
           <label>
             Modelo
-            <input type="text" [(ngModel)]="currentCoche.modelo" />
+            <input type="text" [(ngModel)]="currentCoche.modelo" (input)="validateModelo()" [ngClass]="{ 'invalid': !isModeloValid }"/>
           </label>
         </div>
         <div class="input-row">
           <label>
             Kilometros
-            <input type="number" [(ngModel)]="currentCoche.kilometros" />
+            <input type="number" [(ngModel)]="currentCoche.kilometros" (input)="validateKilometros()" [ngClass]="{ 'invalid': !isKilometrosValid }"/>
           </label>
         </div>
         <div class="input-row">
           <label>
             Transmision
-            <select [(ngModel)]="currentCoche.transmision">
+            <select [(ngModel)]="currentCoche.transmision" (input)="validateTransmision()" [ngClass]="{ 'invalid': !isTransmisionValid }">
               <option value="manual">Manual</option>
               <option value="automatica">Automatica</option>
             </select>
@@ -37,17 +37,17 @@
         <div class="input-row">
           <label>
             Precio
-            <input type="number" [(ngModel)]="currentCoche.precio" />
+            <input type="number" [(ngModel)]="currentCoche.precio" (input)="validatePrecio()" [ngClass]="{ 'invalid': !isPrecioValid }"/>
           </label>
         </div>
       </div>
 
       <div class="container botones">
         <div *ngIf="state === MODES.create">
-          <button (click)="createCoche()" class="btn add">Añadir</button>
+          <button (click)="createCoche()" class="btn add" [ngClass]="{ 'disabled': !isCurrentCocheValid }">Añadir</button>
         </div>
         <div *ngIf="state === MODES.select">
-          <button (click)="updateCoche()" class="btn mod">Modificar</button>
+          <button (click)="updateCoche()" class="btn mod" [ngClass]="{ 'disabled': !isCurrentCocheValid }">Modificar</button>
         </div>
         <div *ngIf="state === MODES.select">
           <button (click)="deleteCoche()" class="btn del">Eliminar</button>
