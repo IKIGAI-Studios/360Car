@@ -9,6 +9,7 @@ import { MODES } from '../../constants/modes';
   styleUrl: './clientes.component.css'
 })
 export class ClientesComponent implements OnInit {
+  isLoading = true;
   state = MODES.create;
   MODES = MODES;
   clientes: Cliente[] = [];
@@ -26,7 +27,9 @@ export class ClientesComponent implements OnInit {
   }
 
   async updateClientes(){
+    this.isLoading = true;
     this.clientes = await this.clienteService.getClientes();
+    this.isLoading = false;
   }
 
   async createCliente(){

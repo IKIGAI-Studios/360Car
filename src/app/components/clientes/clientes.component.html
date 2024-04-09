@@ -1,92 +1,91 @@
 <!-- Nuevos clientes -->
 <div class="page">
-  <div>
-    <div class="container-title">
-      <h2 *ngIf="state === MODES.create">Añadir cliente</h2>
-      <h2 *ngIf="state === MODES.select">Modificar cliente</h2>
-    </div>
-    <div class="row">
-      <div class="column">
-        <div class="container">
-          <div class="input-row">
-            <label>
-              Nombre
-              <input type="text" [(ngModel)]="currentCliente.nombre" />
-            </label>
-          </div>
-          <div class="input-row">
-            <label>
-              Apellidos
-              <input type="text" [(ngModel)]="currentCliente.apellidos" />
-            </label>
-          </div>
-          <div class="input-row">
-            <label>
-              Email
-              <input type="text" [(ngModel)]="currentCliente.email" />
-            </label>
-          </div>
-          <div class="input-row">
-            <label>
-              Telefono
-              <input type="number" [(ngModel)]="currentCliente.telefono" />
-            </label>
-          </div>
+  <div class="row">
+    <div class="input-column">
+      <div class="container-title">
+        <h2 *ngIf="state === MODES.create">Añadir cliente</h2>
+        <h2 *ngIf="state === MODES.select">Modificar cliente</h2>
+      </div>
+      <div class="container">
+        <div class="input-row">
+          <label>
+            Nombre
+            <input type="text" [(ngModel)]="currentCliente.nombre" />
+          </label>
+        </div>
+        <div class="input-row">
+          <label>
+            Apellidos
+            <input type="text" [(ngModel)]="currentCliente.apellidos" />
+          </label>
+        </div>
+        <div class="input-row">
+          <label>
+            Email
+            <input type="text" [(ngModel)]="currentCliente.email" />
+          </label>
+        </div>
+        <div class="input-row">
+          <label>
+            Telefono
+            <input type="number" [(ngModel)]="currentCliente.telefono" />
+          </label>
+        </div>
 
-          <div class="container botones">
-            <div *ngIf="state === MODES.create">
-              <button (click)="createCliente()" class="btn add">Añadir</button>
-            </div>
-            <div *ngIf="state === MODES.select">
-              <button (click)="updateCliente()" class="btn mod">
-                Modificar
-              </button>
-            </div>
-            <div *ngIf="state === MODES.select">
-              <button (click)="deleteCliente()" class="btn del">
-                Eliminar
-              </button>
-            </div>
-            <div *ngIf="state === MODES.select">
-              <button (click)="resetCurrentCliente()" class="btn add">
-                Añadir nuevo
-              </button>
-            </div>
+        <div class="container botones">
+          <div *ngIf="state === MODES.create">
+            <button (click)="createCliente()" class="btn add">Añadir</button>
+          </div>
+          <div *ngIf="state === MODES.select">
+            <button (click)="updateCliente()" class="btn mod">
+              Modificar
+            </button>
+          </div>
+          <div *ngIf="state === MODES.select">
+            <button (click)="deleteCliente()" class="btn del">
+              Eliminar
+            </button>
+          </div>
+          <div *ngIf="state === MODES.select">
+            <button (click)="resetCurrentCliente()" class="btn add">
+              Añadir nuevo
+            </button>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Mostrar los clientes -->
-      <div>
-        <h2>Clientes</h2>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Apellidos</th>
-              <th>Email</th>
-              <th>Telefono</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let cliente of clientes" data-id="{{ cliente.id }}">
-              <td>{{ cliente.nombre }}</td>
-              <td>{{ cliente.apellidos }}</td>
-              <td>{{ cliente.email }}</td>
-              <td>{{ cliente.telefono }}</td>
-              <td>
-                <button
-                  class="btn btn-primary"
-                  (click)="setCurrentCliente(cliente)"
-                >
-                  Editar
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <!-- Mostrar los clientes -->
+    <div class="table-column">
+      <h2>Clientes</h2>
+      <table class="table" *ngIf="!isLoading">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Email</th>
+            <th>Telefono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cliente of clientes" data-id="{{ cliente.id }}">
+            <td>{{ cliente.nombre }}</td>
+            <td>{{ cliente.apellidos }}</td>
+            <td>{{ cliente.email }}</td>
+            <td>{{ cliente.telefono }}</td>
+            <td>
+              <button
+                class="btn btn-primary"
+                (click)="setCurrentCliente(cliente)"
+              >
+                Editar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <app-loader *ngIf="isLoading"></app-loader>
     </div>
   </div>
 </div>

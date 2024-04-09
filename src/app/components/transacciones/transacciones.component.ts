@@ -9,6 +9,8 @@ import { TransaccionService } from '../../services/transaccion/transaccion.servi
 })
 export class TransaccionesComponent implements OnInit {
 
+  isLoading = true;
+
   transacciones: Transaccion[] = [];
   currentTransaccion: Transaccion = new Transaccion({
     fecha: new Date().toLocaleString(),
@@ -26,7 +28,9 @@ export class TransaccionesComponent implements OnInit {
   }
 
   async updateTransacciones(){
+    this.isLoading = true;
     this.transacciones = await this.transaccionService.getTransacciones();
+    this.isLoading = false;
   }
 
   async updateTransaccion(){

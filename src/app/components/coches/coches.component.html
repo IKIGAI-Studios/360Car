@@ -1,11 +1,11 @@
 <!-- Nuevos Coches -->
 <div class="page">
-  <div class="container-title">
-    <h2 *ngIf="state === MODES.create">Añadir coche</h2>
-    <h2 *ngIf="state === MODES.select">Modificar coche</h2>
-  </div>
   <div class="row">
-    <div class="column">
+    <div class="input-column">
+      <div class="container-title">
+        <h2 *ngIf="state === MODES.create">Añadir coche</h2>
+        <h2 *ngIf="state === MODES.select">Modificar coche</h2>
+      </div>
       <div class="container">
         <div class="input-row">
           <label>
@@ -63,9 +63,9 @@
       </div>
     </div>
     <!-- Mostrar los coches -->
-    <div>
+    <div class="table-column">
       <h2>Coches</h2>
-      <table class="table">
+      <table class="table" *ngIf="!isLoading">
         <thead>
           <tr>
             <th>Marca</th>
@@ -97,6 +97,7 @@
           </tr>
         </tbody>
       </table>
+      <app-loader *ngIf="isLoading"></app-loader>
     </div>
   </div>
 </div>

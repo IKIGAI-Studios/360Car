@@ -11,6 +11,7 @@ import { HomeComponent } from './components/home/home.component';
 import { CochesComponent } from './components/coches/coches.component';
 import { TransaccionesComponent } from './components/transacciones/transacciones.component';
 import { ClientesComponent } from './components/clientes/clientes.component';
+import { LoaderComponent } from './components/utils/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ClientesComponent } from './components/clientes/clientes.component';
     HomeComponent,
     CochesComponent,
     TransaccionesComponent,
-    ClientesComponent
+    ClientesComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

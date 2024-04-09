@@ -11,6 +11,7 @@ import { MODES } from '../../constants/modes';
 export class CochesComponent implements OnInit {
 
   state = MODES.create;
+  isLoading = true;
   MODES = MODES;
 
   coches: Coche[] = [];
@@ -31,7 +32,9 @@ export class CochesComponent implements OnInit {
   }
 
   async updateCoches(){
+    this.isLoading = true;
     this.coches = await this.cocheService.getCoches();
+    this.isLoading = false;
   }
 
   async createCoche(){
@@ -62,12 +65,12 @@ export class CochesComponent implements OnInit {
     this.resetCurrentCoche();
   }
 
-  setCurrentCoche(coche: Coche){
+  async setCurrentCoche(coche: Coche){
     this.currentCoche = coche;
     this.state = MODES.select;
   }
 
-  resetCurrentCoche(){
+  async resetCurrentCoche(){
     this.currentCoche = new Coche({
       marca: '',
       modelo: '',
@@ -79,6 +82,7 @@ export class CochesComponent implements OnInit {
     });
 
     this.state = MODES.create;
+    await this.updateCoches();
   }
 
   // async sellCoche(coche: Coche, clienteId: string, precio: number, metodoPago: string)
