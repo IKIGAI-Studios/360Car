@@ -1,4 +1,5 @@
 export enum MODES {
     'create',
-    'select'
+    'select',
+    'sell'
 }

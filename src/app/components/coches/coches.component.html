@@ -5,8 +5,9 @@
       <div class="container-title">
         <h2 *ngIf="state === MODES.create">Añadir coche</h2>
         <h2 *ngIf="state === MODES.select">Modificar coche</h2>
+        <h2 *ngIf="state === MODES.sell">Vender coche</h2>
       </div>
-      <div class="container">
+      <div class="container" *ngIf="state !== MODES.sell">
         <div class="input-row">
           <label>
             Marca
@@ -42,6 +43,27 @@
         </div>
       </div>
 
+      <div class="container" *ngIf="state === MODES.sell">
+        <div class="input-row">
+          <label>
+            Nuevo propietario
+            <select [(ngModel)]="venta.clienteId" (input)="validateCliente()" [ngClass]="{ 'invalid': !isClienteValid }">
+              <option *ngFor="let cliente of clientes" [ngValue]="cliente.id" >{{ cliente.nombre + ' ' + cliente.apellidos }}</option>
+            </select>
+          </label>
+        </div>
+        <div class="input-row">
+          <label>
+            Método de pago
+            <select [(ngModel)]="venta.metodoPago" (input)="validateMetodoPago()" [ngClass]="{ 'invalid': !isMetodoPagoValid }">
+              <option value="efectivo">Efectivo</option>
+              <option value="credito">Crédito</option>
+              <option value="debito">Débito</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
       <div class="container botones">
         <div *ngIf="state === MODES.create">
           <button (click)="createCoche()" class="btn add" [ngClass]="{ 'disabled': !isCurrentCocheValid }">Añadir</button>
@@ -53,9 +75,20 @@
           <button (click)="deleteCoche()" class="btn del">Eliminar</button>
         </div>
         <div *ngIf="state === MODES.select && !currentCoche.vendido">
-          <button (click)="sellCoche()" class="btn sell">Vender</button>
+          <button (click)="setSellMode()" class="btn sell">Vender</button>
         </div>
         <div *ngIf="state === MODES.select">
+          <button (click)="resetCurrentCoche()" class="btn add">
+            Añadir nuevo
+          </button>
+        </div>
+      </div>
+      
+      <div class="container botones" *ngIf="state === MODES.sell">
+        <div>
+          <button (click)="sellCoche()" class="btn sell">Vender</button>
+        </div>
+        <div>
           <button (click)="resetCurrentCoche()" class="btn add">
             Añadir nuevo
           </button>
@@ -70,8 +103,6 @@
           <tr>
             <th>Marca</th>
             <th>Modelo</th>
-            <!-- <th>Color</th>
-                <th>Matrícula</th> -->
             <th>Kilometros</th>
             <th>Transmision</th>
             <th>Precio</th>
@@ -83,12 +114,10 @@
           <tr *ngFor="let coche of coches" data-id="{{ coche.id }}">
             <td>{{ coche.marca }}</td>
             <td>{{ coche.modelo }}</td>
-            <!-- <td>{{ coche.color }}</td>
-                <td>{{ coche.matricula }}</td> -->
             <td>{{ coche.kilometros }} KM</td>
             <td>{{ coche.transmision }}</td>
-            <td>{{ coche.precio }} $</td>
-            <td>{{ coche.vendido }}</td>
+            <td>$ {{ coche.precio }}</td>
+            <td>{{ coche.vendido ? 'vendido' : '' }}</td>
             <td>
               <button class="btn btn-primary" (click)="setCurrentCoche(coche)">
                 Seleccionar

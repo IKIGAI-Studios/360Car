@@ -20,7 +20,10 @@ export class CocheService {
   async getCocheById(cocheId: string): Promise<Coche>{
     return new Promise((resolve) => {
       this.firestore.doc('coches/' + cocheId).valueChanges().subscribe(data => {
-        resolve(data as Coche);
+        resolve({
+          ...data as Coche,
+          id: cocheId
+        });
       });
     })
   }
@@ -111,9 +114,7 @@ export class CocheService {
       tipo: 'venta'
     }));
 
-
     const { id: transaccionId } =  await transaccionRef.get();
-
     await this.addTransaccion(cocheId, transaccionId);
     await this.updateCoche(coche);
   }

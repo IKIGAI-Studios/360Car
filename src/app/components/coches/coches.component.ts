@@ -3,6 +3,9 @@ import Coche from '../../models/coche';
 import { CocheService } from '../../services/coche/coche.service';
 import { MODES } from '../../constants/modes';
 import { validateString, validateAlphanumeric, validateNumber } from '../../utils/validations';
+import { metodoPago } from '../../models/transaccion';
+import Cliente from '../../models/cliente';
+import { ClienteService } from '../../services/cliente/cliente.service';
 
 @Component({
   selector: 'app-coches',
@@ -21,6 +24,8 @@ export class CochesComponent implements OnInit {
   isKilometrosValid = false;
   isTransmisionValid = false;
   isCurrentCocheValid = false;
+  isClienteValid = false;
+  isMetodoPagoValid = false;
 
   transmisiones = ['manual', 'automatica'];
 
@@ -35,16 +40,28 @@ export class CochesComponent implements OnInit {
     dueñoActual: ''
   });
 
-  constructor(private cocheService: CocheService) { }
+  clientes: Cliente[] = [];
+
+  venta = {
+    clienteId: '',
+    metodoPago: ''
+  }
+
+  constructor(private cocheService: CocheService, private clienteService: ClienteService) { }
 
   ngOnInit(): void {
     this.updateCoches();
+    this.updateClientes();
   }
 
   async updateCoches(){
     this.isLoading = true;
     this.coches = await this.cocheService.getCoches();
     this.isLoading = false;
+  }
+
+  async updateClientes(){
+    this.clientes = await this.clienteService.getClientes();
   }
 
   async createCoche(){
@@ -103,11 +120,16 @@ export class CochesComponent implements OnInit {
     await this.updateCoches();
   }
 
+  setSellMode(){
+    this.state = MODES.sell;
+    this.validateVenta();
+  }
+
   // async sellCoche(coche: Coche, clienteId: string, precio: number, metodoPago: string)
   async sellCoche(){
     const coche = this.currentCoche;
-    const clienteId = '123123'
-    const metodoPago = 'efectivo'
+    const clienteId = this.venta.clienteId;
+    const metodoPago: metodoPago = this.venta.metodoPago as metodoPago;
 
     await this.cocheService.sellCoche(coche.id, clienteId, coche.precio, metodoPago);
     this.resetCurrentCoche();
@@ -158,6 +180,20 @@ export class CochesComponent implements OnInit {
       this.isTransmisionValid;
 
     return this.isCurrentCocheValid;
+  }
+
+  validateCliente() {
+    this.isClienteValid = this.venta.clienteId !== null || this.venta.clienteId !== '';
+    this.validateVenta();
+  }
+
+  validateMetodoPago() {
+    this.isMetodoPagoValid = this.venta.metodoPago !== null || this.venta.metodoPago !== '';
+    this.validateVenta();
+  }
+
+  validateVenta() {
+    return this.isClienteValid && this.isMetodoPagoValid;
   }
 
   setValidation(val: boolean) {
