@@ -116,8 +116,6 @@ export class CochesComponent implements OnInit {
 
   // Validaciones
   validateTransmision() {
-    console.log(this.currentCoche);
-
     this.isTransmisionValid = this.currentCoche.transmision !== null || this.currentCoche.transmision !== '';
     this.validateCurrentCoche();
   }

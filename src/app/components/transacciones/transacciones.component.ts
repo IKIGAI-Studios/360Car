@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Transaccion from '../../models/transaccion';
 import { TransaccionService } from '../../services/transaccion/transaccion.service';
+import { MODES } from '../../constants/modes';
 
 @Component({
   selector: 'app-transacciones',
@@ -9,7 +10,14 @@ import { TransaccionService } from '../../services/transaccion/transaccion.servi
 })
 export class TransaccionesComponent implements OnInit {
 
+  state = MODES.create;
+  MODES = MODES;
+  
   isLoading = true;
+  isMetodoPagoValid = false;
+  isCurrentTransaccionValid = false;
+
+  metodosPago = ['efectivo', 'credito', 'debito'];
 
   transacciones: Transaccion[] = [];
   currentTransaccion: Transaccion = new Transaccion({
@@ -34,6 +42,10 @@ export class TransaccionesComponent implements OnInit {
   }
 
   async updateTransaccion(){
+    if (!this.validateCurrentTransaccion()) {
+      return;
+    }
+
     await this.transaccionService.updateTransaccion(this.currentTransaccion);
     this.resetCurrentTransaccion();
     await this.updateTransacciones();
@@ -41,6 +53,9 @@ export class TransaccionesComponent implements OnInit {
 
   setCurrentTransaccion(transaccion: Transaccion){
     this.currentTransaccion = transaccion;
+    this.state = MODES.select;
+    this.setValidation(true);
+    this.validateCurrentTransaccion();
   }
   
   // * NO SE REQUIEREN ESTAS FUNCIONES
@@ -56,7 +71,7 @@ export class TransaccionesComponent implements OnInit {
   //   await this.updateTransacciones();
   // }
 
-  resetCurrentTransaccion(){
+  async resetCurrentTransaccion(){
     this.currentTransaccion = new Transaccion({
       fecha: new Date().toLocaleString(),
       precio: 0,
@@ -65,5 +80,25 @@ export class TransaccionesComponent implements OnInit {
       cliente: '',
       tipo: ''
     });
+
+    this.state = MODES.create;
+    this.setValidation(false);
+    this.validateCurrentTransaccion();
+    await this.updateTransacciones();
+  }
+
+  // Validaciones
+  validateMetodoPago(){
+    this.isMetodoPagoValid = this.currentTransaccion.metodoPago !== '' || this.currentTransaccion.metodoPago === null;
+    this.validateCurrentTransaccion();
+  }
+
+  validateCurrentTransaccion(){
+    this.isCurrentTransaccionValid = this.isMetodoPagoValid;
+    return this.isCurrentTransaccionValid;
+  }
+
+  setValidation(value: boolean){
+    this.isMetodoPagoValid = value;
   }
 }

@@ -3,18 +3,20 @@
     <div class="row reverse">
         <div class="input-column">
             <h2>Actualizar transaccion</h2>
-            <div class="input-row">
-                <label>
-                    Método de pago
-                    <select [(ngModel)]="currentTransaccion.metodoPago">
-                        <option value="efectivo">Efectivo</option>
-                        <option value="credito">Credito</option>
-                        <option value="debito">Debito</option>
-                    </select>
-                </label>
-            </div>
-            <div>
-                <button (click)="updateTransaccion()" class="btn upd">Actualizar</button>
+            <div *ngIf="state === MODES.select">
+                <div class="input-row">
+                    <label>
+                        Método de pago
+                        <select [(ngModel)]="currentTransaccion.metodoPago" (input)="validateMetodoPago()" [ngClass]="{ 'invalid': !isMetodoPagoValid }">
+                            <option value="efectivo">Efectivo</option>
+                            <option value="credito">Credito</option>
+                            <option value="debito">Debito</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="container botones">
+                    <button (click)="updateTransaccion()" class="btn upd" [ngClass]="{ 'disabled': !isCurrentTransaccionValid }">Actualizar</button>
+                </div>
             </div>
         </div>
 
