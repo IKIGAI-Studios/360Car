@@ -10,34 +10,34 @@
         <div class="input-row">
           <label>
             Nombre
-            <input type="text" [(ngModel)]="currentCliente.nombre" />
+            <input type="text" [(ngModel)]="currentCliente.nombre" (input)="validateNombre()" [ngClass]="{ 'invalid': !isNombreValid }"/>
           </label>
         </div>
         <div class="input-row">
           <label>
             Apellidos
-            <input type="text" [(ngModel)]="currentCliente.apellidos" />
+            <input type="text" [(ngModel)]="currentCliente.apellidos" (input)="validateApellidos()" [ngClass]="{ 'invalid': !isApellidosValid }"/>
           </label>
         </div>
         <div class="input-row">
           <label>
             Email
-            <input type="text" [(ngModel)]="currentCliente.email" />
+            <input type="text" [(ngModel)]="currentCliente.email" (input)="validateEmail()" [ngClass]="{ 'invalid': !isEmailValid }"/>
           </label>
         </div>
         <div class="input-row">
           <label>
             Telefono
-            <input type="number" [(ngModel)]="currentCliente.telefono" />
+            <input type="text" [(ngModel)]="currentCliente.telefono" (input)="validateTelefono()" [ngClass]="{ 'invalid': !isTelefonoValid }" maxlength="10"/>
           </label>
         </div>
 
         <div class="container botones">
           <div *ngIf="state === MODES.create">
-            <button (click)="createCliente()" class="btn add">Añadir</button>
+            <button (click)="createCliente()" class="btn add" [ngClass]="{ 'disabled': !isCurrentClienteValid }">Añadir</button>
           </div>
           <div *ngIf="state === MODES.select">
-            <button (click)="updateCliente()" class="btn mod">
+            <button (click)="updateCliente()" class="btn mod" [ngClass]="{ 'disabled': !isCurrentClienteValid }">
               Modificar
             </button>
           </div>
